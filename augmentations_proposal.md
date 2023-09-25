@@ -103,3 +103,17 @@ interpolation is used. The default interpolation is `cv2.INTER_LINEAR` which is 
   (see, https://docs.opencv.org/3.4/da/d54/group__imgproc__transform.html#ga47a974309e9102f5f08231edc7e7529d)
 * image is converted to float64 data type. This is not necessary as the network is trained with float32 data type. This 
 also leads to increased memory and compute when using augmentations. 
+
+## Notes on the DINet architecture
+
+* The DINet architecture use plain convolutional layers. Residual connections are known to improve training and generalization.
+* Audio features are extracted using rather old DeepSpeech model, that is built using RNNs. There are more modern ASR models that
+may extract more robust features. Although I haven't noticed many lip synchronization issues in the generated videos.
+* DeepSpeech model is trained on the speech recognition task, thus the features are insensitive to some sounds, like 
+breathe, clicks, etc. These sounds are present in the data, and they affect mouth shape. Insensitivity to these sounds
+may lead to increased ambiguity in the mapping from audio to mouth shape. One solution is to train an audio encoder together
+with the rest of the network. This would allow to learn features that are more sensitive to the sounds that affect mouth shape.
+* Stacking of reference frames along the channel dimension and then using plain convolutional layers seems to be too 
+computationally expensive and inefficient. Randomly sampled reference frames are not aligned, so it is difficult to learn
+meaningful convolutional kernels. One solution would be to join frames along the batch dimensions for the first convolutional
+layers and then merge them back.
