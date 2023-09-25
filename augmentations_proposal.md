@@ -2,7 +2,6 @@
 
 As seen from the training code, there are no data augmentations made in both frame and clip stages.
 Data augmentations can be used to make the network generalize better, and to make the network more robust to noise.
-Also, data augmentations can be used to overcome some issues in the generated videos.
 
 There is a 'Limitations' section in the paper, where the authors describe some issues in the generated videos.
 One of the challenges is the change of lighting conditions in the source videos. Also, mentioned in the readme.md file,
